@@ -18,7 +18,10 @@ AuthorSchema.virtual('name').get(function () {
 
 // Virtual for author's lifespan
 AuthorSchema.virtual('lifespan').get(function () {
-  return (this.date_of_death.getYear() - this.date_of_birth.getYear()).toString();
+  if (!this.date_of_death || !this.date_of_birth){
+    return "Lifespan: unknown";
+  }
+  return "Lifespan: " + (this.date_of_death.getYear() - this.date_of_birth.getYear()).toString() + " years.";
 });
 
 // Virtual for author's URL
