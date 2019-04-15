@@ -1,6 +1,7 @@
 {
   "name": "library-app",
   "version": "0.0.0",
+  "repository": "git@github.com:Alvee9/library_app.git",
   "engines": {
     "node": "8.10.0"
   },
