@@ -12,4 +12,8 @@ var UserSchema = new Schema({
   thumbnail: {type: String}
 });
 
+UserSchema.virtual('url').get(function(){
+  return '/user/' + this._id;
+})
+
 module.exports = mongoose.model('User', UserSchema);
