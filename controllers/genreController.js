@@ -7,7 +7,7 @@ const { sanitizeBody } = require('express-validator/filter');
 // Display list of all Genre.
 exports.genre_list = function(req, res) {
     Genre.find({}, 'name').sort('name').exec(function(err, list_genres){
-      res.render('genre_list', {title:  'Genre List', genre_list: list_genres});
+      res.render('genre_list', {title:  'Genre List', genre_list: list_genres, user: req.user});
     });
     //res.send('NOT IMPLEMENTED: Genre list');
 };
@@ -33,13 +33,13 @@ exports.genre_detail = function(req, res) {
           return next(err);
       }
       // Successful, so render
-      res.render('genre_detail', { title: 'Genre Detail', genre: results.genre, genre_books: results.genre_books } );
+      res.render('genre_detail', { title: 'Genre Detail', genre: results.genre, genre_books: results.genre_books, user: req.user } );
   });
 };
 
 // Display Genre create form on GET.
 exports.genre_create_get = function(req, res, next) {
-  res.render('genre_form', { title: 'Create Genre' });
+  res.render('genre_form', { title: 'Create Genre', user: req.user });
 };
 
 
@@ -66,7 +66,7 @@ exports.genre_create_post =  [
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
-      res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array()});
+      res.render('genre_form', { title: 'Create Genre', genre: genre, errors: errors.array(), user: req.user});
       return;
     }
     else {

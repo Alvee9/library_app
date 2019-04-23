@@ -4,4 +4,8 @@ node_modules/
 
 # Session files
 
-session/
+sessions/
+
+# Keys
+
+config/keys.js

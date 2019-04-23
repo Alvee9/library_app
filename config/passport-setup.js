@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((userId, done) => {
-    User.find({userId: userId}).then((user) => {
+    User.findOne({userId: userId}).then((user) => {
         done(null, user);
     });
 });
@@ -17,12 +17,16 @@ passport.deserializeUser((userId, done) => {
 passport.use(new LocalStrategy(
   {usernameField: 'email'},
   (email, password, done) => {
-    User.find({userId: email}).then((user) => {
+    console.log("inside local strategy callback", email, password);
+    User.findOne({userId: email}).then((user) => {
+      console.log("then user ", user);
+      // user = user[0];
       if (!user){
+         console.log("if !user ", user);
         return done(null, false, { message: 'User not found.\n' });
       }
       if (!bcrypt.compareSync(password, user.password)) {
-        return done(null, false, { message: 'Invalid credentials.\n' });
+        return done(null, false, { message: 'password didn\'t match.\n' });
       }
       return done(null, user);
     }).catch((err) => {
