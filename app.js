@@ -49,7 +49,7 @@ app.use(session({
   secret: keys.session.cookieKey,
   resave: false,
   saveUninitialized: true,
-  cookie: {maxAge: 5 * 60000}
+  cookie: {maxAge: 60 * 60000}
 }))
 app.use(passport.initialize());
 app.use(passport.session());
