@@ -62,7 +62,7 @@ exports.logout = function(req, res, next){
 }
 
 exports.admin_authorize = function(req, res, next){
-  if (req.user && req.user == 'admin'){
+  if (req.user && req.user.userType == 'admin'){
     next();
   }
   else {
