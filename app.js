@@ -6,11 +6,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-
+const session = require('express-session')
+const FileStore = require('session-file-store')(session);
+var uuid = require('uuid/v4');
+var bodyParser = require('body-parser');
+var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var catalogRouter = require('./routes/catalog');
+var authRouter = require('./routes/auth');
+require('./config/passport-setup');
+var keys = require('./config/keys.js');
 
 var app = express();
 
@@ -31,9 +38,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(session({
+  genid: (req) => {
+    return uuid() // use UUIDs for session IDs
+  },
+  store: new FileStore(),
+  secret: keys.session.cookieKey,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {maxAge: 60 * 60000}
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

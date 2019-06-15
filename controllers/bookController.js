@@ -10,6 +10,7 @@ var BookInstance = require('../models/bookinstance');
 
 exports.index = function(req, res) {
     // res.send('NOT IMPLEMENTED: Site Home Page');
+    console.log("req.user ", req.user);
     async.parallel({
         book_count: function(callback) {
             Book.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
@@ -27,7 +28,7 @@ exports.index = function(req, res) {
             Genre.countDocuments({}, callback);
         }
     }, function(err, results) {
-        res.render('index', { title: 'Local Library Home', error: err, data: results });
+        res.render('index', { title: 'Local Library Home', error: err, data: results, user: req.user });
     });
 };
 
@@ -37,7 +38,7 @@ exports.book_list = function(req, res, next) {
   Book.find({}, 'title author').populate('author').exec(function (err, list_books) {
       if (err) { return next(err); }
       //Successful, so render
-      res.render('book_list', { title: 'Book List', book_list: list_books });
+      res.render('book_list', { title: 'Book List', book_list: list_books, user: req.user });
     });
 
 };
@@ -65,7 +66,7 @@ exports.book_detail = function(req, res) {
           return next(err);
       }
       // Successful, so render.
-      res.render('book_detail', { title: 'Title', book: results.book, book_instances: results.book_instance } );
+      res.render('book_detail', { title: 'Title', book: results.book, book_instances: results.book_instance, user: req.user } );
   });
 };
 
@@ -82,7 +83,7 @@ exports.book_create_get = function(req, res, next) {
         },
     }, function(err, results) {
         if (err) { return next(err); }
-        res.render('book_form', { title: 'Create Book', authors: results.authors, genres: results.genres });
+        res.render('book_form', { title: 'Create Book', authors: results.authors, genres: results.genres, user: req.user });
     });
 
 };
@@ -144,7 +145,7 @@ exports.book_create_post = [
                         results.genres[i].checked='true';
                     }
                 }
-                res.render('book_form', { title: 'Create Book',authors:results.authors, genres:results.genres, book: book, errors: errors.array() });
+                res.render('book_form', { title: 'Create Book',authors:results.authors, genres:results.genres, book: book, errors: errors.array(), user: req.user });
             });
             return;
         }

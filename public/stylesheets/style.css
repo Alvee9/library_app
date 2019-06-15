@@ -2,4 +2,9 @@
     margin-top: 20px;
     padding: 0;
     list-style: none;
+};
+
+.ml-auto {
+      left: auto !important;
+      right: 0px;
 }

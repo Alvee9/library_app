@@ -1,10 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #[em LocalLibrary], a very basic Express website developed as a tutorial example on the Mozilla Developer Network.
-
-  h1 Dynamic content
+  h1 Library App
+  p Welcome to #[strong Library App], an application built on Express to digitize the process of registering and borrowing books in libraries.
+  h2 User Guide
+  p Guest users can browse the website without the need to login/signup. But in order to borrow or return books a user must be registered in the system and need to stay logged in.
+  p There's also a special type of users #[admin], who can add, update and delete contents from the library.
+  p For demonstration purpose you can checkout a general user experience using credentials #[i #[strong email: "b@b.com", password: "b"]]. For admin account use #[i #[strong email: "a@a.com", password: "a"]].
+  h1 Contents
 
   if error
     p Error getting dynamic content.
